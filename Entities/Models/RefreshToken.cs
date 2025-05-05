@@ -12,4 +12,8 @@ public partial class RefreshToken
     public DateTime ExpireTime { get; set; }
 
     public bool IsEnable { get; set; }
+
+    public int? UserId { get; set; }
+
+    public virtual Customer? User { get; set; }
 }

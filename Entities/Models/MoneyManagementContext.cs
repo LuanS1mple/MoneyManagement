@@ -7,7 +7,7 @@ namespace Entities.Models;
 
 public partial class MoneyManagementContext : DbContext
 {
-    public readonly MoneyManagementContext Ins = new MoneyManagementContext();
+    public static MoneyManagementContext Ins = new MoneyManagementContext();
     public MoneyManagementContext()
     {
         if(Ins == null)
@@ -45,11 +45,12 @@ public partial class MoneyManagementContext : DbContext
 
     }
 
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Customer>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__customer__3213E83F3F0799FD");
+            entity.HasKey(e => e.Id).HasName("PK__customer__3213E83F92250CE4");
 
             entity.ToTable("customer");
 
@@ -69,7 +70,7 @@ public partial class MoneyManagementContext : DbContext
 
         modelBuilder.Entity<Expenditure>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Expendit__3213E83FFA76A7A8");
+            entity.HasKey(e => e.Id).HasName("PK__Expendit__3213E83F78479E6C");
 
             entity.ToTable("Expenditure");
 
@@ -78,16 +79,16 @@ public partial class MoneyManagementContext : DbContext
 
             entity.HasOne(d => d.Jar).WithMany(p => p.Expenditures)
                 .HasForeignKey(d => d.JarId)
-                .HasConstraintName("FK__Expenditu__JarId__5629CD9C");
+                .HasConstraintName("FK__Expenditu__JarId__44FF419A");
 
             entity.HasOne(d => d.Usage).WithMany(p => p.Expenditures)
                 .HasForeignKey(d => d.UsageId)
-                .HasConstraintName("FK__Expenditu__Usage__5535A963");
+                .HasConstraintName("FK__Expenditu__Usage__440B1D61");
         });
 
         modelBuilder.Entity<Jar>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__jar__3213E83F311E7787");
+            entity.HasKey(e => e.Id).HasName("PK__jar__3213E83F14EA45D0");
 
             entity.ToTable("jar");
 
@@ -99,12 +100,12 @@ public partial class MoneyManagementContext : DbContext
 
             entity.HasOne(d => d.Customer).WithMany(p => p.Jars)
                 .HasForeignKey(d => d.CustomerId)
-                .HasConstraintName("FK__jar__customerId__59063A47");
+                .HasConstraintName("FK__jar__customerId__52593CB8");
         });
 
         modelBuilder.Entity<RefreshToken>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__RefreshT__3213E83F9C83FEA1");
+            entity.HasKey(e => e.Id).HasName("PK__RefreshT__3213E83F8B108DA3");
 
             entity.ToTable("RefreshToken");
 
@@ -114,11 +115,15 @@ public partial class MoneyManagementContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("token");
+
+            entity.HasOne(d => d.User).WithMany(p => p.RefreshTokens)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("FK__RefreshTo__UserI__5AEE82B9");
         });
 
         modelBuilder.Entity<Revenue>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Revenue__3213E83F6A6476D5");
+            entity.HasKey(e => e.Id).HasName("PK__Revenue__3213E83F7B94455C");
 
             entity.ToTable("Revenue");
 
@@ -127,16 +132,16 @@ public partial class MoneyManagementContext : DbContext
 
             entity.HasOne(d => d.Jar).WithMany(p => p.Revenues)
                 .HasForeignKey(d => d.JarId)
-                .HasConstraintName("FK__Revenue__JarId__52593CB8");
+                .HasConstraintName("FK__Revenue__JarId__412EB0B6");
 
             entity.HasOne(d => d.Usage).WithMany(p => p.Revenues)
                 .HasForeignKey(d => d.UsageId)
-                .HasConstraintName("FK__Revenue__UsageId__5165187F");
+                .HasConstraintName("FK__Revenue__UsageId__403A8C7D");
         });
 
         modelBuilder.Entity<TypeUsage>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__TypeUsag__3213E83F396E5F45");
+            entity.HasKey(e => e.Id).HasName("PK__TypeUsag__3213E83F29CF6B06");
 
             entity.ToTable("TypeUsage");
 
@@ -147,7 +152,7 @@ public partial class MoneyManagementContext : DbContext
 
         modelBuilder.Entity<Usage>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Usage__3213E83F0404F92B");
+            entity.HasKey(e => e.Id).HasName("PK__Usage__3213E83FCF34A463");
 
             entity.ToTable("Usage");
 
@@ -156,7 +161,7 @@ public partial class MoneyManagementContext : DbContext
 
             entity.HasOne(d => d.Type).WithMany(p => p.Usages)
                 .HasForeignKey(d => d.TypeId)
-                .HasConstraintName("FK__Usage__TypeId__3E52440B");
+                .HasConstraintName("FK__Usage__TypeId__3D5E1FD2");
         });
 
         OnModelCreatingPartial(modelBuilder);

@@ -1,3 +1,6 @@
+using ClientAuthentication;
+using MM.Usecase;
+
 namespace MM.HostApp
 {
     public class Program
@@ -8,7 +11,8 @@ namespace MM.HostApp
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-
+            builder.Services.AddSingleton<ICustomerRepository, SqlCustomerRepository>();
+            builder.Services.AddSingleton<IAuthenticationService, AuthenticationService>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

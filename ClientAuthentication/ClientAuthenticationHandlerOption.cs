@@ -9,7 +9,9 @@ namespace ClientAuthentication
 {
     public class ClientAuthenticationHandlerOption : AuthenticationSchemeOptions
     {
-        public  string IssuerSigningKey {  get;  } = string.Empty;
-        public  string Issuer {  get;  } = string.Empty;
+        public  string IssuerSigningKey { get; set; } = string.Empty;
+        public  string Issuer { get; set; } = string.Empty;
+        public int TimeRefresh { get; set; } = 10;
+
     }
 }
