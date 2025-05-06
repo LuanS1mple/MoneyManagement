@@ -1,5 +1,6 @@
 using ClientAuthentication;
 using Entities.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MM.HostApp.Models;
 using MM.HostApp.RemoteAuthencation;
@@ -24,31 +25,7 @@ namespace MM.HostApp.Controllers
         }
         public async Task<IActionResult> Loggin()
         {
-            string accessToken = HttpContext.Request.Headers["AccessToken"];
-            string refreshToken = HttpContext.Request.Headers["RefreshToken"];
-            if(accessToken == null || refreshToken == null)
-            {
                 return View("Login");
-            }
-            if (authenticationService.IsTokenValid(accessToken, _configuration.GetSection("IssuerSigningKey").Value,"LuanS1mple"))
-            {
-                return Content("OK AccessToken");
-            }
-            else
-            {
-                ResponseAuthentication? isAuthenticated = await RemoteApiAuthentication.IsAuthenticated("https://localhost:7242/", refreshToken);
-                if(isAuthenticated == null)
-                {
-                    return Content("Denied RefreshToken");
-                }
-                else
-                {
-                    HttpContext.Response.Cookies.Append("AccessToken", isAuthenticated.AccessToken);
-                    HttpContext.Response.Cookies.Append("RefreshToken", isAuthenticated.RefreshToken);
-                    return Content("OK AccessToken");
-                }
-
-            }
         }
         [HttpPost]
         public IActionResult Check([FromForm] string username, [FromForm] string password)
@@ -56,13 +33,22 @@ namespace MM.HostApp.Controllers
             if (_customerRepository.isCorrectAccount(username, password))
             {
 
-                Customer customer =_customerRepository.GetByAccount(username);
+                Customer customer = _customerRepository.GetByAccount(username);
+                int time = int.Parse(_configuration.GetSection("TimeRefresh").Value);
+                string refreshToken = authenticationService.CreateNewRefreshToken(time,customer);
+                string accessToken = authenticationService.GetAccessTokenByCustomer(customer, _configuration.GetSection("IssuerSigningKey").Value);
+                HttpContext.Response.Cookies.Append("AccessToken", accessToken);
+                HttpContext.Response.Cookies.Append("RefreshToken", refreshToken);
+                return View("MainScreen");
             }
             return Content("Not correct account");
         }
-     
+        [Authorize]
+        public IActionResult Privacy()
+        {
+            return View();
+        }
 
-      
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

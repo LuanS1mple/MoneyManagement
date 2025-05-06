@@ -26,8 +26,8 @@ namespace ClientAuthentication
                 ValidateLifetime = true,
                 ClockSkew = TimeSpan.Zero,
 
-                ValidateAudience = false,
-                ValidAudience = refreshtoken,
+                //ValidateAudience = false,
+                //ValidAudience = refreshtoken,
 
                 ValidateIssuer = true,
                 ValidIssuer = issuer,
@@ -108,7 +108,26 @@ namespace ClientAuthentication
             repo.SaveChanges();
             return token;
         }
-
+        public string CreateNewRefreshToken(int timeRefresh,Customer customer)
+        {
+            var repo = MoneyManagementContext.Ins;
+            string token = null;
+            do
+            {
+                token = Guid.NewGuid().ToString().Substring(0, 8);
+            }
+            while (repo.RefreshTokens.Where(s => s.Token.Equals(token)).Any());
+            RefreshToken refreshToken = new RefreshToken
+            {
+                Token = token,
+                ExpireTime = DateTime.UtcNow.AddDays(timeRefresh),
+                IsEnable = true,
+                UserId = customer.Id
+            };
+            repo.RefreshTokens.Add(refreshToken);
+            repo.SaveChanges();
+            return token;
+        }
         public void DeleteRefreshToken(string token)
         {
             var repo = MoneyManagementContext.Ins;
@@ -167,6 +186,8 @@ namespace ClientAuthentication
                 ValidateLifetime = true,
                 ClockSkew = TimeSpan.Zero,
 
+                ValidateAudience=false,
+
                 ValidateIssuer = true,
                 ValidIssuer = iss,
             };
@@ -177,6 +198,34 @@ namespace ClientAuthentication
             }
             catch (Exception ex)
             {
+                return false;
+            }
+        }
+
+        public bool IsTokenValid(string token, string key, string iss, out ClaimsPrincipal claimsPrincipal)
+        {
+            JwtSecurityTokenHandler securityTokenHandler = new JwtSecurityTokenHandler();
+            TokenValidationParameters parameters = new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key)),
+
+                ValidateLifetime = true,
+                ClockSkew = TimeSpan.Zero,
+
+                ValidateAudience = false,
+
+                ValidateIssuer = true,
+                ValidIssuer = iss,
+            };
+            try
+            {
+                claimsPrincipal = securityTokenHandler.ValidateToken(token, parameters, out SecurityToken st);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                claimsPrincipal = null;
                 return false;
             }
         }

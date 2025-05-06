@@ -14,7 +14,8 @@ namespace MM.HostApp.RemoteAuthencation
         }
         public static async Task<ResponseAuthentication?> IsAuthenticated(string url,string refreshToken)
         {
-            httpClient.DefaultRequestHeaders.Add("RefreshToken",refreshToken);
+            httpClient.DefaultRequestHeaders.Remove("RefreshToken");
+            httpClient.DefaultRequestHeaders.Add("RefreshToken", refreshToken);
             if (string.IsNullOrEmpty(url))
             {
                 return null;

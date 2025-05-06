@@ -1,4 +1,6 @@
 using ClientAuthentication;
+using Microsoft.AspNetCore.Authentication;
+using MM.HostApp.Middleware;
 using MM.Usecase;
 
 namespace MM.HostApp
@@ -12,7 +14,11 @@ namespace MM.HostApp
             // Add services to the container.
             builder.Services.AddControllersWithViews();
             builder.Services.AddSingleton<ICustomerRepository, SqlCustomerRepository>();
-            builder.Services.AddSingleton<IAuthenticationService, AuthenticationService>();
+            builder.Services.AddSingleton<ClientAuthentication.IAuthenticationService, ClientAuthentication.AuthenticationService>();
+            builder.Services.AddAuthentication("FakeScheme")
+                 .AddScheme<AuthenticationSchemeOptions, AuthenticationSchemaNothing>("FakeScheme", 
+                 options => {
+                 });
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -24,10 +30,10 @@ namespace MM.HostApp
             }
 
             app.UseHttpsRedirection();
+            app.UseMiddleware<MiddlewareAuthentication>();
             app.UseStaticFiles();
-
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(

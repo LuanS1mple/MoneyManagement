@@ -16,11 +16,13 @@ namespace ClientAuthentication
         public bool IsValidRefreshToken(string refreshToken);
 
         public  string CreateNewRefreshToken(int time,string oldToken);
+        public  string CreateNewRefreshToken(int time,Customer customer);
         public void DeleteRefreshToken(string token);
         public string RenewAccessToken(ClaimsPrincipal claimsPrincipal,string key,string aud);
         public bool isValidTokenIgnoreTime(string accessToken, string IssuerSigningKey, string issuer, out SecurityToken? token, out ClaimsPrincipal? claimsPrincipal, string refreshToken);
         public Customer GetByRefreshToken(string refreshToken);
         public string GetAccessTokenByCustomer(Customer customer,string key);
         public bool IsTokenValid(string token,string key, string iss);
+        public bool IsTokenValid(string token,string key, string iss, out ClaimsPrincipal claimsPrincipal);
     }
 }
