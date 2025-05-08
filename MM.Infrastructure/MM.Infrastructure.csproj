@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\MM.Usecase\MM.Usecase.csproj" />
+  </ItemGroup>
+
 </Project>

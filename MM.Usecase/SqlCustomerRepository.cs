@@ -18,5 +18,23 @@ namespace MM.Usecase
         {
             return MoneyManagementContext.Ins.Customers.Where(s => s.Username.Equals(username)).FirstOrDefault()!;
         }
+
+        public void AddDeposit(int amount)
+        {
+
+        }
+
+        public Customer GetById(int id)
+        {
+            return MoneyManagementContext.Ins.Customers.Where(s => s.Id == id).FirstOrDefault();
+        }
+
+        public void AddDeposit(int amount, int customerId)
+        {
+            Customer customer = GetById(customerId);
+            customer.Deposit += amount;
+            MoneyManagementContext.Ins.Customers.Update(customer);
+            MoneyManagementContext.Ins.SaveChanges();
+        }
     }
 }

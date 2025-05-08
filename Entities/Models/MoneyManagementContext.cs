@@ -44,8 +44,6 @@ public partial class MoneyManagementContext : DbContext
         }
 
     }
-
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Customer>(entity =>
@@ -55,6 +53,7 @@ public partial class MoneyManagementContext : DbContext
             entity.ToTable("customer");
 
             entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Deposit).HasColumnName("deposit");
             entity.Property(e => e.Email)
                 .HasMaxLength(500)
                 .IsUnicode(false);

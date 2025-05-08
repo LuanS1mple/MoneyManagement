@@ -25,50 +25,43 @@ namespace MM.HostApp.Middleware
         {
             var accessToken = context.Request.Cookies["AccessToken"];
             var refreshToken = context.Request.Cookies["RefreshToken"];
-            if (string.IsNullOrEmpty(refreshToken) && string.IsNullOrEmpty(accessToken))
-            {
-                await _next(context);
-            }
+
             if (!string.IsNullOrEmpty(accessToken))
             {
-                // Giả sử bạn dùng JWT - bạn cần validate token ở đây
-                bool isAuthenticated = authenticationService.IsTokenValid(accessToken, _configuration.GetSection("IssuerSigningKey").Value, "LuanS1mple", out ClaimsPrincipal principal);
+                bool isAuthenticated = authenticationService.IsTokenValid(
+                    accessToken,
+                    _configuration.GetSection("IssuerSigningKey").Value,
+                    "LuanS1mple",
+                    out ClaimsPrincipal principal);
 
                 if (principal != null)
                 {
                     context.User = principal;
-                    await _next(context);
-
                 }
             }
-            else
+            else if (!string.IsNullOrEmpty(refreshToken))
             {
-                if (string.IsNullOrEmpty(refreshToken))
+                ResponseAuthentication? isAuthenticated = await RemoteApiAuthentication.IsAuthenticated("https://localhost:7242/", refreshToken);
+                if (isAuthenticated != null)
                 {
-                    await _next(context);
-                }
-                else
-                {
-                    ResponseAuthentication? isAuthenticated = await RemoteApiAuthentication.IsAuthenticated("https://localhost:7242/", refreshToken);
-                    if (isAuthenticated == null)
-                    {
-                        await _next(context);
-                    }
-                    else
-                    {
-                        context.Response.Cookies.Append("AccessToken", isAuthenticated.AccessToken);
-                        context.Response.Cookies.Append("RefreshToken", isAuthenticated.RefreshToken);
-                        bool convert = authenticationService.IsTokenValid(isAuthenticated.AccessToken, _configuration.GetSection("IssuerSigningKey").Value, "LuanS1mple", out ClaimsPrincipal principal);
+                    context.Response.Cookies.Append("AccessToken", isAuthenticated.AccessToken);
+                    context.Response.Cookies.Append("RefreshToken", isAuthenticated.RefreshToken);
 
-                        if (principal != null)
-                        {
-                            context.User = principal;
-                            await _next(context);
-                        }
+                    bool convert = authenticationService.IsTokenValid(
+                        isAuthenticated.AccessToken,
+                        _configuration.GetSection("IssuerSigningKey").Value,
+                        "LuanS1mple",
+                        out ClaimsPrincipal principal);
+
+                    if (principal != null)
+                    {
+                        context.User = principal;
                     }
                 }
-                await _next(context);
             }
+
+            // ✅ Chỉ gọi 1 lần
+            await _next(context);
         }
 
     }

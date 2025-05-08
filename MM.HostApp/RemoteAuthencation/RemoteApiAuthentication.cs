@@ -8,7 +8,6 @@ namespace MM.HostApp.RemoteAuthencation
     public class RemoteApiAuthentication
     {
         private static HttpClient httpClient = new HttpClient();
-        public string url { get; set; }
         public RemoteApiAuthentication()
         {
         }

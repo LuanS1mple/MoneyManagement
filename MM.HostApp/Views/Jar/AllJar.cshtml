@@ -1,0 +1,183 @@
+﻿@model MM.HostApp.Models.ResponseJarController;
+
+@{
+	ViewData["Title"] = "Danh sách Hũ";
+}
+
+<div class="jar-container">
+	<div class="header">
+		<h2>Danh sách Hũ</h2>
+		<button class="add-btn" onclick="toggleForm()">+ Thêm mới Hũ</button>
+	</div>
+
+	<div id="jar-form" class="jar-form hidden">
+		@if(Model.Message!=null){
+			<h1 style="color: red">@Model.Message</h1>
+		}
+		<form method="post" action="/jar/add">
+			<div>
+				<label for="name">Tên Hũ:</label>
+				<input type="text" id="name" name="Name" required>
+			</div>
+			<div>
+				<label for="description">Mục đích:</label>
+				<input type="text" id="description" name="Description" required>
+			</div>
+			<div>
+				<label for="total">Khoản tiền:</label>
+				<input type="number" min="0" id="total" name="Total" required>
+			</div>
+			<button type="submit">Lưu</button>
+		</form>
+	</div>
+
+	<table class="jar-table">
+		<thead>
+			<tr>
+				<th>STT</th>
+				<th>Tên Hũ</th>
+				<th>Mục đích</th>
+				<th>Số dư</th>
+				<th>Xóa</th>
+			</tr>
+		</thead>
+		<tbody>
+			@{
+				int stt = 1;
+			}
+			@foreach (var jar in Model.ResponseJars)
+			{
+				<tr>
+					<td>@stt</td>
+					<td>@jar.Name</td>
+					<td>@jar.Description</td>
+					<td>@jar.Total</td>
+					<td><a href="delete?jarId=@jar.Id" class="delete-link">Xóa</a></td>
+				</tr>
+				stt++;
+			}
+		</tbody>
+	</table>
+</div>
+<script>
+	function toggleForm() {
+		const form = document.getElementById("jar-form");
+		form.classList.toggle("hidden");
+	}
+</script>
+
+<style>
+	/* Container tổng */
+	.jar-container {
+		max-width: 900px;
+		margin: 40px auto;
+		padding: 20px;
+		background: #ffffff;
+		border-radius: 12px;
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+		font-family: 'Segoe UI', sans-serif;
+	}
+
+	/* Header */
+	.header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 20px;
+	}
+
+		.header h2 {
+			margin: 0;
+			color: #333;
+		}
+
+	.add-btn {
+		padding: 8px 16px;
+		background-color: #007bff;
+		color: white;
+		border: none;
+		border-radius: 6px;
+		cursor: pointer;
+		transition: background-color 0.3s ease;
+	}
+
+		.add-btn:hover {
+			background-color: #0056b3;
+		}
+
+	/* Form ẩn/hiện */
+	.jar-form {
+		margin-bottom: 24px;
+		padding: 16px;
+		border: 1px solid #ccc;
+		border-radius: 8px;
+		background-color: #f9f9f9;
+	}
+
+		.jar-form div {
+			margin-bottom: 12px;
+		}
+
+		.jar-form label {
+			display: inline-block;
+			width: 100px;
+			font-weight: 600;
+		}
+
+		.jar-form input {
+			padding: 8px 12px;
+			width: 300px;
+			border: 1px solid #ccc;
+			border-radius: 6px;
+		}
+
+		.jar-form button {
+			padding: 8px 14px;
+			background-color: #28a745;
+			color: white;
+			border: none;
+			border-radius: 6px;
+			cursor: pointer;
+		}
+
+			.jar-form button:hover {
+				background-color: #218838;
+			}
+
+	/* Bảng dữ liệu */
+	.jar-table {
+		width: 100%;
+		border-collapse: collapse;
+	}
+
+		.jar-table th,
+		.jar-table td {
+			padding: 12px;
+			text-align: left;
+			border-bottom: 1px solid #ddd;
+		}
+
+		.jar-table th {
+			background-color: #f2f2f2;
+			color: #333;
+		}
+
+		.jar-table tr:hover {
+			background-color: #f1f1f1;
+		}
+
+	.delete-link {
+		color: #dc3545;
+		text-decoration: none;
+		font-weight: 600;
+	}
+
+		.delete-link:hover {
+			text-decoration: underline;
+		}
+
+	/* Form hidden */
+	.hidden {
+		display: none;
+	}
+</style>

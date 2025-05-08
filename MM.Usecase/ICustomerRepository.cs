@@ -11,5 +11,7 @@ namespace MM.Usecase
     {
         public bool isCorrectAccount(string username,string password);
         public Customer GetByAccount(string username);
+        public Customer GetById(int id);
+        public void AddDeposit(int amount,int customerId);
     }
 }

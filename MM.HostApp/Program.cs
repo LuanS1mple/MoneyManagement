@@ -1,6 +1,7 @@
 using ClientAuthentication;
 using Microsoft.AspNetCore.Authentication;
 using MM.HostApp.Middleware;
+using MM.Infrastructure;
 using MM.Usecase;
 
 namespace MM.HostApp
@@ -14,6 +15,7 @@ namespace MM.HostApp
             // Add services to the container.
             builder.Services.AddControllersWithViews();
             builder.Services.AddSingleton<ICustomerRepository, SqlCustomerRepository>();
+            builder.Services.AddSingleton<IJarRepository, SqlJarRepository>();
             builder.Services.AddSingleton<ClientAuthentication.IAuthenticationService, ClientAuthentication.AuthenticationService>();
             builder.Services.AddAuthentication("FakeScheme")
                  .AddScheme<AuthenticationSchemeOptions, AuthenticationSchemaNothing>("FakeScheme", 

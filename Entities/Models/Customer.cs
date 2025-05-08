@@ -15,6 +15,8 @@ public partial class Customer
 
     public string? Password { get; set; }
 
+    public int? Deposit { get; set; }
+
     public virtual ICollection<Jar> Jars { get; set; } = new List<Jar>();
 
     public virtual ICollection<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();

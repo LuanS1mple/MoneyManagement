@@ -35,7 +35,7 @@ namespace MM.HostApp.Controllers
 
                 Customer customer = _customerRepository.GetByAccount(username);
                 int time = int.Parse(_configuration.GetSection("TimeRefresh").Value);
-                string refreshToken = authenticationService.CreateNewRefreshToken(time,customer);
+                string refreshToken = authenticationService.CreateNewRefreshToken(time, customer);
                 string accessToken = authenticationService.GetAccessTokenByCustomer(customer, _configuration.GetSection("IssuerSigningKey").Value);
                 HttpContext.Response.Cookies.Append("AccessToken", accessToken);
                 HttpContext.Response.Cookies.Append("RefreshToken", refreshToken);

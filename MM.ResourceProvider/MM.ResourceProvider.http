@@ -1,0 +1,6 @@
+@MM.ResourceProvider_HostAddress = http://localhost:5199
+
+GET {{MM.ResourceProvider_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
