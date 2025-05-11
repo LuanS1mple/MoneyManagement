@@ -11,6 +11,8 @@ public partial class Usage
 
     public int? TypeId { get; set; }
 
+    public bool? Enable { get; set; }
+
     public virtual ICollection<Expenditure> Expenditures { get; set; } = new List<Expenditure>();
 
     public virtual ICollection<Revenue> Revenues { get; set; } = new List<Revenue>();

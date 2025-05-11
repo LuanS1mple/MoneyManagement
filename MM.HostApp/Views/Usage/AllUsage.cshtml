@@ -1,0 +1,193 @@
+﻿@model MM.HostApp.Models.UsageResponse;
+
+@{
+	ViewData["Title"] = "Danh sách Hoạt Động";
+}
+
+<div class="jar-container">
+	<div class="header">
+		<h2>Danh sách các hoạt động đã lưu</h2>
+		<button class="add-btn" onclick="toggleForm()">+ Thêm mới hoạt động</button>
+	</div>
+
+	<div id="usage-form" class="usage-form hidden">
+		@if (Model.Message != null)
+		{
+			<h1 style="color: red">@Model.Message</h1>
+		}
+		<form method="post" action="/usage/add">
+			<div>
+				<label for="name">Tên Hũ:</label>
+				<input type="text" id="name" name="Name" required>
+			</div>
+			<div>
+				<label for="description">Mục đích:</label>
+				<select name="TypeId">
+					@foreach(var type in Model.types){
+						<option value="@type.Id">
+							@type.Name
+						</option>
+					}
+				</select>
+			</div>
+			<button type="submit">Lưu</button>
+		</form>
+	</div>
+
+	<table class="jar-table">
+		<thead>
+			<tr>
+				<th>STT</th>
+				<th>Khoản dùng</th>
+				<th>Mục đích</th>
+				<th>Xóa</th>
+			</tr>
+		</thead>
+		<tbody>
+			@{
+				int stt = 1;
+			}
+			@foreach (var usage in Model.usages)
+			{
+				<tr>
+					<td>@stt</td>
+					<td>@usage.Name</td>
+					<td>@usage.Type?.Name</td>
+					<td><a href="/usage/delete?usageId=@usage.Id" class="delete-link">Xóa</a></td>
+				</tr>
+				stt++;
+			}
+		</tbody>
+	</table>
+</div>
+<script>
+	function toggleForm() {
+		const form = document.getElementById("usage-form");
+		form.classList.toggle("hidden");
+	}
+</script>
+
+<style>
+	/* Container tổng */
+	.jar-container {
+		max-width: 800px;
+		margin: 40px auto;
+		padding: 20px;
+		background-color: #f9f9f9;
+		border-radius: 12px;
+		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+		font-family: 'Segoe UI', sans-serif;
+	}
+
+	/* Header */
+	.header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 20px;
+	}
+
+		.header h2 {
+			margin: 0;
+			color: #333;
+		}
+
+	.add-btn {
+		background-color: #28a745;
+		color: white;
+		padding: 10px 16px;
+		border: none;
+		border-radius: 8px;
+		font-size: 16px;
+		cursor: pointer;
+		transition: background-color 0.3s ease;
+	}
+
+		.add-btn:hover {
+			background-color: #218838;
+		}
+
+	/* Form ẩn/hiện */
+	.usage-form {
+		margin-bottom: 20px;
+		padding: 20px;
+		background-color: #fff;
+		border-radius: 10px;
+		border: 1px solid #ddd;
+	}
+
+		.usage-form div {
+			margin-bottom: 15px;
+		}
+
+		.usage-form label {
+			display: block;
+			margin-bottom: 5px;
+			color: #555;
+			font-weight: 500;
+		}
+
+		.usage-form input[type="text"],
+		.usage-form select {
+			width: 100%;
+			padding: 10px;
+			border-radius: 6px;
+			border: 1px solid #ccc;
+			box-sizing: border-box;
+		}
+
+		.usage-form button {
+			background-color: #007bff;
+			color: white;
+			padding: 10px 16px;
+			border: none;
+			border-radius: 8px;
+			cursor: pointer;
+			font-size: 15px;
+			transition: background-color 0.3s ease;
+		}
+
+			.usage-form button:hover {
+				background-color: #0069d9;
+			}
+
+	/* Bảng danh sách */
+	.jar-table {
+		width: 100%;
+		border-collapse: collapse;
+		margin-top: 10px;
+	}
+
+		.jar-table th, .jar-table td {
+			padding: 12px 15px;
+			border-bottom: 1px solid #ddd;
+			text-align: left;
+		}
+
+		.jar-table th {
+			background-color: #f1f1f1;
+			color: #333;
+		}
+
+		.jar-table tr:hover {
+			background-color: #f5f5f5;
+		}
+
+	/* Nút xóa */
+	.delete-link {
+		color: #dc3545;
+		text-decoration: none;
+		font-weight: 500;
+		transition: color 0.3s ease;
+	}
+
+		.delete-link:hover {
+			color: #c82333;
+		}
+
+	/* Form ẩn */
+	.hidden {
+		display: none;
+	}
+
+</style>
