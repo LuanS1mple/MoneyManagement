@@ -1,0 +1,239 @@
+﻿@model MM.HostApp.Models.ResponseRevenue;
+
+@{
+	ViewData["Title"] = "Danh sách các khoản đã thu";
+}
+
+<div class="revenue-container">
+	<div class="header">
+		<h2>Danh sách thu</h2>
+		<button class="add-btn" onclick="toggleForm()">+ Thêm mới khoản thu</button>
+	</div>
+
+	<div id="revenue-form" class="revenue-form hidden">
+		@if (Model.Message != null)
+		{
+			<h1 style="color: red">@Model.Message</h1>
+		}
+		<form method="post" action="/revenue/add">
+			<div>
+				<label for="revenueSelect">Tên khoản thu:</label>
+				<select id="revenueSelect" name="UsageId">
+					@foreach (var usage in Model.UsageRevenues)
+					{
+						<option value="@usage.Id">@usage.Name</option>
+					}
+					<option value="other">Khác</option>
+				</select>
+
+				<label for="NewRevenue">Khoản thu mới:</label>
+				<input type="text" id="NewRevenue" name="NewRevenue" required>
+
+			</div>
+			<div>
+				<label for="Amount">Số tiền:</label>
+				<input type="number" min="1" id="Amount" name="Amount" required>
+			</div>
+			<div>
+				<label for="Date">Ngày nhận:</label>
+				<input type="date" id="Date" name="Date" required>
+			</div>
+			<div>
+				<label for="jar">Nạp vào hũ:</label>
+				<select name="JarId">
+					@foreach (var jar in Model.Jars)
+					{
+						<option value="@jar.Id">@jar.Name</option>
+					}
+				</select>
+			</div>
+			<div>
+				<label for="Note">Ghi chú:</label>
+				<input type="text" id="Note" name="Note" required>
+			</div>
+			<button type="submit">Lưu</button>
+		</form>
+	</div>
+
+	<table class="revenue-table">
+		<thead>
+			<tr>
+				<th>STT</th>
+				<th>Tên khoản thu</th>
+				<th>Số tiền</th>
+				<th>Ngày thu</th>
+				<th>Nạp vào hũ</th>
+				<th>Ghi chú</th>
+			</tr>
+		</thead>
+		<tbody>
+			@{
+				int stt = 1;
+			}
+			@foreach (var jar in Model.Revenues)
+			{
+				<tr>
+					<td>@stt</td>
+					<td>@jar.Usage.Name</td>
+					<td>@jar.Amount</td>
+					<td>@jar.TakenDate</td>
+					<td>@jar.Jar.Name</td>
+					<td>@jar.Note</td>
+				</tr>
+				stt++;
+			}
+		</tbody>
+	</table>
+</div>
+<script>
+	const revenueSelect = document.getElementById("revenueSelect");
+	const newRevenueInput = document.getElementById("NewRevenue"); // <-- sửa ở đây
+
+	// Ban đầu disable input
+	newRevenueInput.disabled = true;
+
+	revenueSelect.addEventListener("change", function () {
+		if (this.value === "other") {
+			newRevenueInput.disabled = false;
+		} else {
+			newRevenueInput.disabled = true;
+			newRevenueInput.value = ""; // Optional: clear input nếu không chọn 'Khác'
+		}
+	});
+
+	function toggleForm() {
+		const form = document.getElementById("revenue-form");
+		form.classList.toggle("hidden");
+	}
+
+</script>
+
+<style>
+	.revenue-container {
+		max-width: 900px;
+		margin: 40px auto;
+		padding: 20px;
+		background-color: #f8fff8;
+		border-radius: 12px;
+		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+		font-family: 'Segoe UI', sans-serif;
+		border: 1px solid #cdeccd;
+	}
+
+	/* Header */
+	.header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 20px;
+	}
+
+		.header h2 {
+			margin: 0;
+			color: #2f6e2f;
+		}
+
+	.add-btn {
+		background-color: #28a745;
+		color: white;
+		padding: 10px 16px;
+		border: none;
+		border-radius: 8px;
+		font-size: 16px;
+		cursor: pointer;
+		transition: background-color 0.3s ease;
+	}
+
+		.add-btn:hover {
+			background-color: #218838;
+		}
+
+	/* Form */
+	.revenue-form {
+		margin-bottom: 20px;
+		padding: 20px;
+		background-color: #ffffff;
+		border-radius: 10px;
+		border: 1px solid #b6e7b6;
+	}
+
+		.revenue-form.hidden {
+			display: none;
+		}
+
+		.revenue-form div {
+			margin-bottom: 15px;
+		}
+
+		.revenue-form label {
+			display: block;
+			margin-bottom: 5px;
+			color: #2f6e2f;
+			font-weight: 500;
+		}
+
+		.revenue-form input[type="text"],
+		.revenue-form input[type="number"],
+		.revenue-form input[type="date"],
+		.revenue-form select {
+			width: 100%;
+			padding: 10px;
+			border-radius: 6px;
+			border: 1px solid #ccc;
+			box-sizing: border-box;
+		}
+
+		.revenue-form button[type="submit"] {
+			background-color: #28a745;
+			color: white;
+			padding: 10px 16px;
+			border: none;
+			border-radius: 8px;
+			cursor: pointer;
+			font-size: 15px;
+			transition: background-color 0.3s ease;
+		}
+
+			.revenue-form button[type="submit"]:hover {
+				background-color: #218838;
+			}
+
+	/* Bảng thu */
+	.revenue-table {
+		width: 100%;
+		border-collapse: collapse;
+		margin-top: 10px;
+	}
+
+		.revenue-table th, .revenue-table td {
+			padding: 12px 15px;
+			border-bottom: 1px solid #ddd;
+			text-align: center;
+		}
+
+		.revenue-table th {
+			background-color: #d4edda;
+			color: #155724;
+		}
+
+		.revenue-table tr:nth-child(even) {
+			background-color: #f9fff9;
+		}
+
+		.revenue-table tr:hover {
+			background-color: #eefaf0;
+		}
+
+	/* Nút xóa */
+	.delete-link {
+		color: #dc3545;
+		text-decoration: none;
+		font-weight: 500;
+		transition: color 0.3s ease;
+	}
+
+		.delete-link:hover {
+			color: #c82333;
+		}
+
+</style>

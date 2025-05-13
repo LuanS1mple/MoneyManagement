@@ -17,6 +17,14 @@ namespace MM.Infrastructure
             repo.SaveChanges();
         }
 
+        public void AddToJarNumber(int jarNumber, int amount)
+        {
+            Jar jar = MoneyManagementContext.Ins.Jars.Where(s=>s.Id == jarNumber).FirstOrDefault()!;
+            jar.Total += amount;
+            MoneyManagementContext.Ins.Jars.Update(jar);
+            MoneyManagementContext.Ins.SaveChanges();
+        }
+
         public void Delete(Jar jar)
         {
             var repo = MoneyManagementContext.Ins;
@@ -33,7 +41,12 @@ namespace MM.Infrastructure
         public Jar GetById(int id)
         {
             var repo = MoneyManagementContext.Ins;
-            return repo.Jars.Where(s => s.Id == id).FirstOrDefault();
+            return repo.Jars.Where(s => s.Id == id).FirstOrDefault()!;
+        }
+
+        public int GetMaxOfJar(int jarId)
+        {
+            return MoneyManagementContext.Ins.Jars.Where(s=> s.Id == jarId).FirstOrDefault()!.Total!.Value;
         }
     }
 }

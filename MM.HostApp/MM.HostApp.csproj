@@ -18,8 +18,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\ExpenditureManagement\" />
-    <Folder Include="Controllers\RevenueManagement\" />
     <Folder Include="Controllers\TypeConsumeManagement\" />
   </ItemGroup>
 

@@ -13,5 +13,8 @@ namespace MM.Usecase
         public void Add(Jar jar);
         public void Delete(Jar jar);
         public Jar GetById(int id);
+
+        public void AddToJarNumber(int  jarNumber,int amount);
+        public int GetMaxOfJar(int jarId);
     }
 }

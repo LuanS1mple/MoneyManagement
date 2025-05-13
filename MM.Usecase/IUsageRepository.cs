@@ -13,5 +13,9 @@ namespace MM.Usecase
         public void AddUsage(Usage usage);
         public Usage GetById(int id);
         public void Delete(Usage usage);
+        public List<Usage> GetRevenueUsage();
+
+        public List<Usage> GetExpenditureUsage();
+        public int GetByName(string name);
     }
 }

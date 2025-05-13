@@ -33,5 +33,21 @@ namespace MM.Infrastructure
         {
             return MoneyManagementContext.Ins.Usages.Where(s => s.Id == id).FirstOrDefault()!;
         }
+
+        public int GetByName(string name)
+        {
+            return MoneyManagementContext.Ins.Usages.Where(s=>s.Name.Equals(name)).FirstOrDefault()!.Id;
+        }
+
+        public List<Usage> GetExpenditureUsage()
+        {
+            return MoneyManagementContext.Ins.Usages.Include(s => s.Type).Where(s => s.TypeId == 2).ToList();
+
+        }
+
+        public List<Usage> GetRevenueUsage()
+        {
+            return MoneyManagementContext.Ins.Usages.Include(s=>s.Type).Where(s => s.TypeId == 1).ToList();
+        }
     }
 }

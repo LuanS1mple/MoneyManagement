@@ -68,126 +68,132 @@
 </script>
 
 <style>
-	/* Container tổng */
-	.jar-container {
-		max-width: 800px;
-		margin: 40px auto;
-		padding: 20px;
-		background-color: #f9f9f9;
-		border-radius: 12px;
-		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-		font-family: 'Segoe UI', sans-serif;
-	}
+	.revenue-container {
+	max-width: 900px;
+	margin: 40px auto;
+	padding: 20px;
+	background-color: #f8fff8;
+	border-radius: 12px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	font-family: 'Segoe UI', sans-serif;
+	border: 1px solid #cdeccd;
+}
 
-	/* Header */
-	.header {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		margin-bottom: 20px;
-	}
+/* Header */
+.header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 20px;
+}
 
-		.header h2 {
-			margin: 0;
-			color: #333;
-		}
+.header h2 {
+	margin: 0;
+	color: #2f6e2f;
+}
 
-	.add-btn {
-		background-color: #28a745;
-		color: white;
-		padding: 10px 16px;
-		border: none;
-		border-radius: 8px;
-		font-size: 16px;
-		cursor: pointer;
-		transition: background-color 0.3s ease;
-	}
+.add-btn {
+	background-color: #28a745;
+	color: white;
+	padding: 10px 16px;
+	border: none;
+	border-radius: 8px;
+	font-size: 16px;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+}
 
-		.add-btn:hover {
-			background-color: #218838;
-		}
+.add-btn:hover {
+	background-color: #218838;
+}
 
-	/* Form ẩn/hiện */
-	.usage-form {
-		margin-bottom: 20px;
-		padding: 20px;
-		background-color: #fff;
-		border-radius: 10px;
-		border: 1px solid #ddd;
-	}
+/* Form */
+.revenue-form {
+	margin-bottom: 20px;
+	padding: 20px;
+	background-color: #ffffff;
+	border-radius: 10px;
+	border: 1px solid #b6e7b6;
+}
 
-		.usage-form div {
-			margin-bottom: 15px;
-		}
+.revenue-form.hidden {
+	display: none;
+}
 
-		.usage-form label {
-			display: block;
-			margin-bottom: 5px;
-			color: #555;
-			font-weight: 500;
-		}
+.revenue-form div {
+	margin-bottom: 15px;
+}
 
-		.usage-form input[type="text"],
-		.usage-form select {
-			width: 100%;
-			padding: 10px;
-			border-radius: 6px;
-			border: 1px solid #ccc;
-			box-sizing: border-box;
-		}
+.revenue-form label {
+	display: block;
+	margin-bottom: 5px;
+	color: #2f6e2f;
+	font-weight: 500;
+}
 
-		.usage-form button {
-			background-color: #007bff;
-			color: white;
-			padding: 10px 16px;
-			border: none;
-			border-radius: 8px;
-			cursor: pointer;
-			font-size: 15px;
-			transition: background-color 0.3s ease;
-		}
+.revenue-form input[type="text"],
+.revenue-form input[type="number"],
+.revenue-form input[type="date"],
+.revenue-form select {
+	width: 100%;
+	padding: 10px;
+	border-radius: 6px;
+	border: 1px solid #ccc;
+	box-sizing: border-box;
+}
 
-			.usage-form button:hover {
-				background-color: #0069d9;
-			}
+.revenue-form button[type="submit"] {
+	background-color: #28a745;
+	color: white;
+	padding: 10px 16px;
+	border: none;
+	border-radius: 8px;
+	cursor: pointer;
+	font-size: 15px;
+	transition: background-color 0.3s ease;
+}
 
-	/* Bảng danh sách */
-	.jar-table {
-		width: 100%;
-		border-collapse: collapse;
-		margin-top: 10px;
-	}
+.revenue-form button[type="submit"]:hover {
+	background-color: #218838;
+}
 
-		.jar-table th, .jar-table td {
-			padding: 12px 15px;
-			border-bottom: 1px solid #ddd;
-			text-align: left;
-		}
+/* Bảng thu */
+.revenue-table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-top: 10px;
+}
 
-		.jar-table th {
-			background-color: #f1f1f1;
-			color: #333;
-		}
+.revenue-table th, .revenue-table td {
+	padding: 12px 15px;
+	border-bottom: 1px solid #ddd;
+	text-align: center;
+}
 
-		.jar-table tr:hover {
-			background-color: #f5f5f5;
-		}
+.revenue-table th {
+	background-color: #d4edda;
+	color: #155724;
+}
 
-	/* Nút xóa */
-	.delete-link {
-		color: #dc3545;
-		text-decoration: none;
-		font-weight: 500;
-		transition: color 0.3s ease;
-	}
+.revenue-table tr:nth-child(even) {
+	background-color: #f9fff9;
+}
 
-		.delete-link:hover {
-			color: #c82333;
-		}
+.revenue-table tr:hover {
+	background-color: #eefaf0;
+}
 
-	/* Form ẩn */
-	.hidden {
-		display: none;
-	}
+/* Nút xóa */
+.delete-link {
+	color: #dc3545;
+	text-decoration: none;
+	font-weight: 500;
+	transition: color 0.3s ease;
+}
+
+.delete-link:hover {
+	color: #c82333;
+}
+
 
 </style>

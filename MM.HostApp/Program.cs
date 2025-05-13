@@ -18,6 +18,8 @@ namespace MM.HostApp
             builder.Services.AddSingleton<IJarRepository, SqlJarRepository>();
             builder.Services.AddSingleton<IUsageRepository, SqlUsageRepository>();
             builder.Services.AddSingleton<ITypeUsageRepository, SqlTypeUsageRepository>();
+            builder.Services.AddSingleton<IRevenueRepository, SqlRevenueRepository>();
+            builder.Services.AddSingleton<IExpenditureRepository, SqlExpenditureRepository>();
             builder.Services.AddSingleton<ClientAuthentication.IAuthenticationService, ClientAuthentication.AuthenticationService>();
             builder.Services.AddAuthentication("FakeScheme")
                  .AddScheme<AuthenticationSchemeOptions, AuthenticationSchemaNothing>("FakeScheme", 
